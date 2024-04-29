@@ -62,7 +62,7 @@ const TaskDetailsScreen = ({route}) => {
         </View>
         <View style={styles.rock}>
           <Text style={{fontSize: 20, flex: 1}}>Project</Text>
-          <Text style={{fontSize: 40, flex: 1}}>---</Text>
+          <Text style={{fontSize: 20, flex: 1}}>{task?.heading}</Text>
         </View>
         <View style={styles.rock}>
           <Text style={{fontSize: 20, flex: 1}}>Priority</Text>
@@ -75,7 +75,7 @@ const TaskDetailsScreen = ({route}) => {
             {task?.priority}
           </Text>
         </View>
-        <View style={styles.rock}>
+        {/* <View style={styles.rock}>
           <Text style={{fontSize: 20, flex: 1}}>Assigned To</Text>
           <View style={{flex: 1, flexDirection: 'row', alignItems: 'center'}}>
             <Icon
@@ -90,31 +90,31 @@ const TaskDetailsScreen = ({route}) => {
               color={R.colors.PRIMARI_DARK}
             />
           </View>
-        </View>
-        <View style={styles.rock}>
+        </View> */}
+        {/* <View style={styles.rock}>
           <Text style={{fontSize: 20, flex: 1}}>Short Code</Text>
           <Text style={{fontSize: 40, flex: 1}}>---</Text>
         </View>
         <View style={styles.rock}>
           <Text style={{fontSize: 20, flex: 1}}>Milestones</Text>
           <Text style={{fontSize: 40, flex: 1}}>---</Text>
-        </View>
+        </View> */}
         <View style={styles.rock}>
           <Text style={{fontSize: 20, flex: 1}}>Assigned By</Text>
           <Text style={{fontSize: 20, flex: 1}}>Mr. Prateek Goyal</Text>
         </View>
-        <View style={styles.rock}>
+        {/* <View style={styles.rock}>
           <Text style={{fontSize: 20, flex: 1}}>Label</Text>
           <Text style={{fontSize: 40, flex: 1}}>---</Text>
         </View>
         <View style={styles.rock}>
           <Text style={{fontSize: 20, flex: 1}}>Task Category</Text>
           <Text style={{fontSize: 40, flex: 1}}>---</Text>
-        </View>
-        <View style={styles.rock}>
+        </View> */}
+        {/* <View style={styles.rock}>
           <Text style={{fontSize: 20, flex: 1}}>Description</Text>
           <Text style={{fontSize: 20, flex: 1}}>This Is Task Details</Text>
-        </View>
+        </View> */}
       </View>
     </ScreenWrapper>
   );

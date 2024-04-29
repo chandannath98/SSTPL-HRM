@@ -3,8 +3,9 @@ import React from 'react';
 import ScreenWrapper from '../../library/wrapper/ScreenWrapper';
 import R from '../../resources/R';
 import Button from '../../library/commons/Button';
+import ScreensNameEnum from '../../constants/ScreensNameEnum';
 
-const SuccessScreen = () => {
+const SuccessScreen = ({navigation}) => {
   return (
     <ScreenWrapper header={false}>
       <View style={styles.TextInput}>
@@ -35,6 +36,7 @@ const SuccessScreen = () => {
           }}
         />
         <Button
+        onPress={()=>navigation.navigate(ScreensNameEnum.HOME_SCREEN)}
           title="Back Home"
           textColor="#FFBC00"
           textStyle={{fontWeight: 'bold'}}

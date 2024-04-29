@@ -26,6 +26,7 @@ import SuccessScreen from '../screens/success/SuccessScreen';
 import AttendancereportScreen from '../screens/attendancereport/AttendancereportScreen';
 import TaskScreen from '../screens/task/TaskScreen';
 import Icon from 'react-native-vector-icons/MaterialCommunityIcons';
+import MaterialIcons from 'react-native-vector-icons/MaterialIcons';
 import HolidayScreen from '../screens/Holiday/HolidayScreen';
 import AppreciationScreen from '../screens/Appreciatoin/AppreciationScreen';
 import ProjectScreen from '../screens/Project/ProjectScreen';
@@ -40,6 +41,9 @@ import {AuthContext} from '../store/contexts/AuthContext';
 import sInfoUtil from '../utils/sInfo.util';
 import {View} from 'react-native';
 import AsyncStorage from '@react-native-async-storage/async-storage';
+import AllLeaves from '../screens/Leave/AllLeaves';
+import AdminScreen from '../screens/Admin/AdminScreen';
+import ProfileScreen from '../screens/profiles/ProfileScreen';
 const RegistrationStack = createStackNavigator();
 const Drawer = createDrawerNavigator();
 
@@ -105,6 +109,11 @@ const RegistrationRoutes = ({isAuthenticated, initialRoutName}) => {
             options={{headerShown: false}}
           />
           <RegistrationStack.Screen
+            component={AdminScreen}
+            name={ScreensNameEnum.ADMIN_SCREEN}
+            options={{headerShown: false}}
+          />
+          <RegistrationStack.Screen
             component={WelcomeScreen}
             name={ScreensNameEnum.WELCOME_SCREEN}
           />
@@ -144,6 +153,11 @@ const RegistrationRoutes = ({isAuthenticated, initialRoutName}) => {
             options={{headerShown: false}}
           />
           <RegistrationStack.Screen
+            component={LeaveScreen}
+            name={ScreensNameEnum.SUCCESS_SCREEN}
+            options={{headerShown: false}}
+          />
+          <RegistrationStack.Screen
             component={TaskDetailsScreen}
             name={ScreensNameEnum.TASK_DETAILS_SCREEN}
             options={{headerShown: false}}
@@ -153,6 +167,21 @@ const RegistrationRoutes = ({isAuthenticated, initialRoutName}) => {
             name={ScreensNameEnum.PROJECT_DETAILS_SCREEN}
             options={{headerShown: false}}
           />
+          <RegistrationStack.Screen
+            component={TimesheetScreen}
+            name={ScreensNameEnum.TIMESHEETS_SCREEN}
+            options={{headerShown: false}}
+          />
+          <RegistrationStack.Screen
+            component={ProfileScreen}
+            name={ScreensNameEnum.PROFILE_SCREEN}
+            options={{headerShown: false}}
+          />
+          {/* <RegistrationStack.Screen
+            component={AllLeaves}
+            name={ScreensNameEnum.ALL_LEAVES}
+            options={{headerShown: false}}
+          /> */}
         </>
       )}
     </RegistrationStack.Navigator>
@@ -166,7 +195,7 @@ function MyTabs() {
     <Tab.Navigator>
       <Tab.Screen
         name={ScreensNameEnum.DRAWER_STACK}
-        component={DrawerRoute}
+        component={HomeScreen}
         options={{
           headerShown: false,
           tabBarLabel: 'Home',
@@ -175,40 +204,51 @@ function MyTabs() {
           ),
         }}
       />
-      <Tab.Screen
+      {/* <Tab.Screen
         name={ScreensNameEnum.MESSAGE_SCREEN}
         component={Messages}
         options={{
           headerShown: false,
-          tabBarLabel: 'Messages',
+          tabBarLabel: 'Notes',
           tabBarIcon: ({color, size}) => (
             <Icon name="message-reply-text-outline" color={color} size={size} />
           ),
         }}
-      />
+      /> */}
       <Tab.Screen
+        name={ScreensNameEnum.MARK_ATTENDENCE}
+        component={AttendanceScreen}
+        options={{
+          headerShown: false,
+          tabBarLabel: 'Attendence',
+          tabBarIcon: ({color, size}) => (
+            <Icon name="plus-circle" color={color} size={size} />
+          ),
+        }}
+      />
+      {/* <Tab.Screen
         name={ScreensNameEnum.ACCOUNT_SCREEN}
         component={Account}
         options={{
           headerShown: false,
-          tabBarLabel: 'Account',
+          tabBarLabel: 'Chat',
           tabBarIcon: ({color, size}) => (
-            <Icon name="account-outline" color={color} size={size} />
+            <Icon name="message-reply-text-outline" color={color} size={size} />
           ),
         }}
-      />
+      /> */}
       <Tab.Screen
-        name={ScreensNameEnum.TASK_SCREEN}
-        component={TaskScreen}
+        name={ScreensNameEnum.PROFILE_SCREEN}
+        component={Account}
         options={{
           headerShown: false,
-          tabBarLabel: 'Tasks',
+          tabBarLabel: 'Profile',
           tabBarIcon: ({color, size}) => (
-            <Icon name="file-tree" color={color} size={size} />
+            <MaterialIcons name="person-outline" color={color} size={size} />
           ),
         }}
       />
-      <Tab.Screen
+      {/* <Tab.Screen
         name={ScreensNameEnum.EVENTS_SCREENS}
         component={Events}
         options={{
@@ -218,7 +258,7 @@ function MyTabs() {
             <Icon name="calendar-range" color={color} size={size} />
           ),
         }}
-      />
+      /> */}
       {/* <Tab.Screen name="Settings" component={SettingsScreen} /> */}
     </Tab.Navigator>
   );
@@ -254,7 +294,7 @@ function DrawerRoute() {
       /> */}
       <Drawer.Screen
         name={ScreensNameEnum.HOME_SCREEN}
-        component={HomeScreen}
+        component={MyTabs}
         options={{
           drawerIcon: ({focused, size}) => (
             <Icon
@@ -282,8 +322,18 @@ function DrawerRoute() {
       />
 
       <Drawer.Screen
-        name={ScreensNameEnum.LEAVE_SCREEN}
-        component={LeaveScreen}
+        name={ScreensNameEnum.ALL_LEAVES}
+        component={AllLeaves}
+        options={{
+          drawerIcon: ({focused, size}) => (
+            <Icon name="tent" size={size} color={focused ? 'blue' : 'gray'} />
+          ),
+          headerShown: false,
+        }}
+      />
+      <Drawer.Screen
+        name={ScreensNameEnum.EVENTS_SCREENS}
+        component={Events}
         options={{
           drawerIcon: ({focused, size}) => (
             <Icon name="tent" size={size} color={focused ? 'blue' : 'gray'} />

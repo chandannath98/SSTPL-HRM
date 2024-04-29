@@ -133,3 +133,20 @@ export const fetchHolidays = createAsyncThunk(
 );
 
 
+
+export const fetchEvents= createAsyncThunk(
+  'fetch/events',
+  async (data, {rejectWithValue}) => {
+    try {
+      const res = await new UserApi().fetchUserEvents();
+      if (res) {
+        console.log(res)
+        return res;
+      }
+    } catch (error) {
+      return rejectWithValue(error.code);
+    }
+  },
+);
+
+

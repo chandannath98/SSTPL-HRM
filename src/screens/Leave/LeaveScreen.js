@@ -23,9 +23,9 @@ import {useSelector} from 'react-redux';
 import {currentUserSelector} from '../../store/slices/user/user.slice';
 import Loader from '../../library/commons/Loader';
 
-const LeaveScreen = () => {
+const LeaveScreen = ({navigation}) => {
   const user = useSelector(currentUserSelector);
-  const navigation = useNavigation();
+  // const navigation = useNavigation();
   const [endDate, setEndDate] = useState(new Date());
   const [endDateopen, setEndDateopen] = useState(false);
   const [aditional, setAditional] = useState('');
@@ -42,15 +42,15 @@ const LeaveScreen = () => {
         leave_type_id: type,
         duration: duration,
         reason: aditional,
-        status: 0,
+        status: 2,
         user_id: user?.id,
         leave_date: moment(new Date()).format('YYYY-MM-DD'),
       };
       const res = await new UserApi().applyLeave(data);
       if (res) {
-        Alert.alert('Leave Applied Successfully');
         setAditional('');
         setLoading(false);
+        navigation.navigate(ScreensNameEnum.SUCCESS_SCREEN)
       }
       // console.log('------', res);
     } catch (error) {

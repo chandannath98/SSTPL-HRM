@@ -29,39 +29,104 @@ import {
   fetchClockinStatus,
 } from '../../store/actions/userActions';
 import moment from 'moment';
+import { screenOptions } from '../../navigator/screenOptions';
 const DATA = [
   {
     id: 1,
     icon: 'calendar-check-outline',
-    title: 'Attendance',
-    screen: ScreensNameEnum.ATTENDANCEREPORT_SCREEN,
-    color: R.colors.LIGHTGREEN,
-    image: require('../../assets/Images/icon1.png'),
+    title: 'Profile',
+    screen: ScreensNameEnum.ACCOUNT_SCREEN,
+    color: '#1DB7AE',
+    image: require('../../assets/Images/1.png'),
   },
   {
     id: 2,
     icon: 'party-popper',
-    title: 'Leaves',
-    screen: ScreensNameEnum.LEAVE_SCREEN,
-    color: R.colors.RED,
-    image: require('../../assets/Images/icon2.png'),
+    title: 'Attendence',
+    screen: ScreensNameEnum.ATTENDANCEREPORT_SCREEN,
+    color: '#158780',
+    image: require('../../assets/Images/2.png'),
   },
   {
     id: 3,
     icon: 'party-popper',
-    title: 'Holiday',
-    screen: ScreensNameEnum.HOLIDAY_SCREEN,
-    color: '#FFA201',
-    image: require('../../assets/Images/icon3.png'),
+    title: 'Leaves',
+    screen: ScreensNameEnum.ALL_LEAVES,
+    color: '#FF5C3A',
+    image: require('../../assets/Images/3.png'),
   },
   {
     id: 4,
     icon: 'gift-open-outline',
-    title: 'Appreciation',
-    screen: ScreensNameEnum.APPRECIATION_SCREEN,
-    color: R.colors.GREEN,
-    image: require('../../assets/Images/icon4.png'),
+    title: 'Apply Leave',
+    screen: ScreensNameEnum.LEAVE_SCREEN,
+    color: '#4DB948',
+    image: require('../../assets/Images/4.png'),
   },
+  {
+    id: 5,
+    icon: 'gift-open-outline',
+    title: 'Project',
+    screen: ScreensNameEnum.PROJECT_SCREEN,
+    color: '#2C5CB7',
+    image: require('../../assets/Images/5.png'),
+  },
+  {
+    id: 6,
+    icon: 'gift-open-outline',
+    title: 'Task',
+    screen: ScreensNameEnum.TASK_SCREEN,
+    color: '#FF9D00',
+    image: require('../../assets/Images/6.png'),
+  },
+  // {
+  //   id: 7,
+  //   icon: 'gift-open-outline',
+  //   title: 'Payslip',
+  //   screen: null,
+  //   color: '#C97C00',
+  //   image: require('../../assets/Images/7.png'),
+  // },
+  {
+    id: 8,
+    icon: 'gift-open-outline',
+    title: 'Events',
+    screen:null,
+    color: '#4DB948',
+    image: require('../../assets/Images/8.png'),
+  },
+  {
+    id: 9,
+    icon: 'gift-open-outline',
+    title: 'Holidays',
+    screen: ScreensNameEnum.HOLIDAY_SCREEN,
+    color: '#AA1224',
+    image: require('../../assets/Images/9.png'),
+  },
+  // {
+  //   id: 10,
+  //   icon: 'gift-open-outline',
+  //   title: 'Appriciation',
+  //   screen: null,
+  //   color: '#646762',
+  //   image: require('../../assets/Images/10.png'),
+  // },
+  // {
+  //   id: 11,
+  //   icon: 'gift-open-outline',
+  //   title: 'Timesheet',
+  //   screen: null,
+  //   color: '#FF5C3A',
+  //   image: require('../../assets/Images/11.png'),
+  // },
+  // {
+  //   id: 12,
+  //   icon: 'gift-open-outline',
+  //   title: 'Notice',
+  //   screen: null,
+  //   color: '#FFA200',
+  //   image: require('../../assets/Images/12.png'),
+  // },
 ];
 const HomeScreen = ({navigation}) => {
   const dispatch = useDispatch();
@@ -87,17 +152,23 @@ const HomeScreen = ({navigation}) => {
   // console.log('______________', clockin);
 
   const Item = ({item}) => (
-    <View style={[styles.cardView, {width: 130, marginRight: 10}]}>
-      <Pressable
-        onPress={() => navigation.navigate(item.screen)}
+    <Pressable
+    android_ripple={{color: 'gray', borderless: false}}
+    onPress={() =>item.screen? navigation.navigate(item.screen):{}}
+    
+    style={[styles.cardView]}>
+      <View
         style={{justifyContent: 'space-between', alignItems: 'center'}}>
         {/* <Icon name={item.icon} size={50} color={item?.color} /> */}
-        <Image source={ item?.image} />
+        <View  style={{backgroundColor:item?.color,padding:15,borderRadius:50}} >
+
+        <Image source={ item?.image} style={{height:30,aspectRatio:1}} />
+        </View>
         <Text style={{color: R.colors.PRIMARI_DARK, fontWeight: 'bold'}}>
           {item.title}
         </Text>
-      </Pressable>
-    </View>
+      </View>
+    </Pressable>
   );
   return (
     <ScreenWrapper header={false}>
@@ -116,9 +187,91 @@ const HomeScreen = ({navigation}) => {
             size={35}
             color={R.colors.PRIMARI_DARK}
           />
-          <Icon name="bell-outline" size={35} color={R.colors.PRIMARI_DARK} />
+          <View
+          style={{
+            flexDirection: 'row',
+            // borderBottomWidth: 0.5,
+            paddingBottom: 10,
+            borderColor: R.colors.LIGHTGRAY,
+            // marginTop: 10,
+            // backgroundColor:"red",
+            flex:1
+
+          }}>
+          <View style={{flex: 1, flexDirection: 'row', alignItems: 'center',flexWrap:"wrap"}}>
+            <Image
+              source={{uri: user?.image_url}}
+              style={{height: 50, width: 50, borderRadius: 30, marginLeft: 20}}
+            />
+            <View style={{flexDirection: 'column'}}>
+              <Text style={styles.userName}>
+                {user?.name ? user.name : 'N/A'}
+              </Text>
+              <Text
+                style={[
+                  styles.userName,
+                  {color: R.colors.DARKGRAY, fontSize: R.fontSize.L},
+                ]}>
+                ( {user?.employee_detail?.designation?.name} )
+              </Text>
+            </View>
+          </View>
+          <View
+            style={{
+              // flex: 1,
+              justifyContent: 'flex-end',
+              alignContent: 'flex-end',
+              alignItems: 'flex-end',
+              paddingHorizontal: 5,
+            }}>
+            {/* <Button
+              title={
+                clockin?.attendance?.clock_out_time == null &&
+                clockin?.attendance != null
+                  ? 'Clock out'
+                  : 'Clock in'
+              }
+              buttonStyle={{
+                alignSelf: 'left',
+                width: '50%',
+                marginTop: 20,
+                backgroundColor:
+                  clockin?.attendance?.clock_out_time == null &&
+                  clockin?.attendance != null
+                    ? 'red'
+                    : R.colors.primary,
+              }}
+              textStyle={{fontWeight: 'bold'}}
+              onPress={() => setModalVis(true)}
+            /> */}
+          </View>
         </View>
-        <View
+          {/* <Icon name="bell-outline" size={35} color={R.colors.PRIMARI_DARK} /> */}
+        </View>
+
+        <Button
+              title="Mark Attendence"
+              // title={
+              //   clockin?.attendance?.clock_out_time == null &&
+              //   clockin?.attendance != null
+              //     ? 'Clock out'
+              //     : 'Clock in'
+              // }
+              buttonStyle={{
+                alignSelf: 'center',
+                borderRadius:15,
+                width: '50%',
+                marginTop: 20,
+                backgroundColor:
+                  clockin?.attendance?.clock_out_time == null &&
+                  clockin?.attendance != null
+                    ? 'red'
+                    : R.colors.primary,
+              }}
+              textStyle={{fontWeight: 'bold'}}
+              onPress={() => navigation.navigate(ScreensNameEnum.ATTENDANCE_SCREEN)}
+            />
+        {/* <View
           style={{
             flexDirection: 'row',
             borderBottomWidth: 0.5,
@@ -173,7 +326,7 @@ const HomeScreen = ({navigation}) => {
               onPress={() => setModalVis(true)}
             />
           </View>
-        </View>
+        </View> */}
 
         {/* <View style={styles.filterView}>
           <View style={styles.searchView}>
@@ -194,201 +347,27 @@ const HomeScreen = ({navigation}) => {
             />
           </View>
         </View> */}
-        <View style={[styles.headerView, {paddingVertical: 0}]}>
-          <Text style={styles.catText}>HR Management</Text>
-          <Text style={styles.seeAllText}></Text>
+        <View style={[styles.headerView, {paddingVertical: 20}]}>
+          {/* <Text style={styles.catText}>HR Management</Text>
+          <Text style={styles.seeAllText}></Text> */}
         </View>
         <View style={styles.categoryView}>
           <FlatList
             data={DATA}
             renderItem={({item}) => <Item item={item} />}
             keyExtractor={item => item.id}
-            horizontal={true}
-            showsHorizontalScrollIndicator={false}
+            numColumns={3}
+            contentContainerStyle={{gap:20}}
+            // horizontal={true}
+            // showsHorizontalScrollIndicator={false}
           />
         </View>
-        <View style={[styles.headerView, {paddingVertical: 10}]}>
+        {/* <View style={[styles.headerView, {paddingVertical: 10}]}>
           <Text style={styles.catText}>Work Management</Text>
           <Text style={styles.seeAllText}></Text>
-        </View>
+        </View> */}
 
-        <View style={styles.categoryView}>
-          <View style={[styles.cardView, {width: '32%'}]}>
-            <Pressable
-              onPress={() =>
-                navigation.navigate(ScreensNameEnum.PROJECT_SCREEN)
-              }
-              style={{justifyContent: 'space-between', alignItems: 'center'}}>
-              {/* <Icon name="camera-document" size={50} color={R.colors.RED} /> */}
-              <Image source={require('../../assets/Images/icon5.png')} />
-              <Text style={{color: R.colors.PRIMARI_DARK, fontWeight: 'bold'}}>
-                Projects
-              </Text>
-            </Pressable>
-          </View>
-          <View style={[styles.cardView, {width: '32%'}]}>
-            <Pressable
-              onPress={() => navigation.navigate(ScreensNameEnum.TASK_SCREEN)}
-              style={{justifyContent: 'space-between', alignItems: 'center'}}>
-              {/* <Icon name="file-tree" size={50} color={R.colors.LIGHTGREEN} />
-               */}
-              <Image source={require('../../assets/Images/icon6.png')} />
-              <Text style={{color: R.colors.PRIMARI_DARK, fontWeight: 'bold'}}>
-                Tasks
-              </Text>
-            </Pressable>
-          </View>
-          <View style={[styles.cardView, {width: '32%'}]}>
-            <Pressable
-              onPress={() =>
-                navigation.navigate(ScreensNameEnum.TIMESHEETS_SCREEN)
-              }
-              style={{justifyContent: 'space-between', alignItems: 'center'}}>
-              {/* <Icon name="archive-clock" size={50} color={R.colors.primary} />
-               */}
-              <Image source={require('../../assets/Images/icon7.png')} />
-              <Text style={{color: R.colors.PRIMARI_DARK, fontWeight: 'bold'}}>
-                Timesheet
-              </Text>
-            </Pressable>
-          </View>
-        </View>
-        <View style={[styles.headerView, {alignItems: 'center'}]}>
-          <Text style={styles.catText}>Current Task</Text>
-          <Text
-            style={[styles.seeAllText, {padding: 10}]}
-            onPress={() => navigation.navigate(ScreensNameEnum.TASK_SCREEN)}>
-            See All
-          </Text>
-        </View>
-        {tasks?.length >= 1 ? (
-          <View style={styles.taskView}>
-            {/* <View style={styles.ImageView}>
-            <Image source={require('../../assets/Images/Image.png')} />
-          </View> */}
-            <View style={{flex: 1, justifyContent: 'space-between'}}>
-              <Text style={[styles.nameText]}>{tasks[0].heading}</Text>
-              <Text style={[styles.dateText]}>
-                {`${moment(tasks[0].start_date).format('DD MMM YY')} - ${moment(
-                  tasks[0].due_date,
-                ).format('DD MMM YY')}`}
-              </Text>
-              {/* <Text>Sick Leave Request</Text> */}
-            </View>
-            <View style={styles.acceptView}>
-              <Pressable style={styles.pendingView}>
-                <Text style={styles.pendingText}>{tasks[0]?.status}</Text>
-              </Pressable>
-              {/* <Pressable
-                style={styles.cancelView}
-                onPress={() =>
-                  navigation.navigate(ScreensNameEnum.TASK_DETAILS_SCREEN, {
-                    taskId: tasks[0]?.id,
-                  })
-                }
-                >
-                <Text style={styles.cancelText}>View Task</Text>
-              </Pressable> */}
-            </View>
-          </View>
-        ) : (
-          <Text
-            style={{
-              textAlign: 'center',
-              fontWeight: 'bold',
-              color: R.colors.LIGHTGRAY,
-            }}>
-            No Current Task Available
-          </Text>
-        )}
-        {/* <View style={[styles.headerView, {paddingVertical: 10}]}>
-          <Text style={styles.catText}>Attendance Of July</Text>
-          <Text style={styles.seeAllText}></Text>
-        </View> */}
-        {/* <View
-          style={{
-            flexDirection: 'row',
-            margin: 10,
-            justifyContent: 'space-evenly',
-            height: '18%',
-          }}>
-          <View style={styles.attView}>
-            <Text style={styles.presentText}>54</Text>
-            <Text
-              style={{
-                fontWeight: 'bold',
-                fontSize: 20,
-                paddingTop: 10,
-                color: R.colors.PRIMARI_DARK,
-              }}>
-              Present
-            </Text>
-          </View>
-
-          <View style={styles.attView}>
-            <Text style={styles.lateText}>15</Text>
-            <Text
-              style={{
-                fontWeight: 'bold',
-                fontSize: 20,
-                color: R.colors.PRIMARI_DARK,
-                paddingTop: 10,
-              }}>
-              Late
-            </Text>
-          </View>
-          <View style={styles.attView}>
-            <Text
-              style={[
-                styles.absentText,
-                {
-                  color: '#FF5C3A',
-                },
-              ]}>
-              20
-            </Text>
-            <Text
-              style={{
-                fontWeight: 'bold',
-                fontSize: 20,
-                color: R.colors.PRIMARI_DARK,
-                paddingTop: 10,
-              }}>
-              Absent
-            </Text>
-          </View>
-        </View> */}
-        {/* <View
-          style={{
-            flexDirection: 'row',
-            justifyContent: 'space-around',
-            marginTop: 40,
-          }}>
-          <Icon
-            name="home-outline"
-            size={35}
-            color={R.colors.primary}
-            style={{}}
-          />
-          <Icon
-            name="subtitles-outline"
-            size={35}
-            color={R.colors.primary}
-            style={{}}
-          />
-          <Icon
-            name="email-outline"
-            size={35}
-            color={R.colors.primary}
-            style={{}}
-          />
-          <Icon
-            name="account-outline"
-            size={35}
-            color={R.colors.primary}
-            style={{}}
-          />
-        </View> */}
+       
       </ImageBackground>
       {modalVis && (
         <ClockInModal isVisible={modalVis} onModalClose={setModalVis} />
@@ -407,6 +386,7 @@ const styles = StyleSheet.create({
     flexDirection: 'row',
     justifyContent: 'space-between',
     paddingHorizontal: 10,
+    alignItems:"center"
     // borderBottomWidth:0.5
   },
   helloText: {
@@ -475,6 +455,7 @@ const styles = StyleSheet.create({
     textAlignVertical: 'center',
   },
   cardView: {
+    marginHorizontal:'3%',
     // backgroundColor: R.colors.PRIMARY_LIGHT,
     // borderRadius: 20,
     // padding: 5,
@@ -488,10 +469,10 @@ const styles = StyleSheet.create({
     // shadowColor: R.colors.LIGHTGRAY,
     // elevation:10
     backgroundColor: R.colors.PRIMARY_LIGHT,
-    borderRadius: 5,
+    borderRadius: 10,
     padding: 5,
     paddingVertical: 10,
-    borderColor: R.colors.LIGHTGRAY,
+    // borderColor: R.colors.LIGHTGRAY,
     // Add elevation for Android
     elevation: 5,
     // Set shadow properties for iOS
@@ -503,10 +484,11 @@ const styles = StyleSheet.create({
     shadowRadius: 5, // Adjust as needed
     shadowColor: R.colors.LIGHTGRAY,
     // Add dimensions to the container
-    width: 200, // Adjust as needed
-    height: 100, // Adjust as needed
-    borderColor: '#ccc',
-    borderWidth: 0.5,
+    width: '28%', // Adjust as needed
+    height: 120, // Adjust as needed
+    // borderColor: '#ccc',
+    // borderWidth: 0.5,
+    
   },
   taskView: {
     flexDirection: 'row',

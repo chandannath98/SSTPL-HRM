@@ -13,7 +13,8 @@ import {
   fetchAllProjects,
   fetchClockinStatus,
   fetchAttendanceReport,
-  fetchHolidays
+  fetchHolidays,
+  fetchEvents
 } from '../../actions/userActions';
 // TODO: Should we have api based status and errors for more fine grained control
 /*
@@ -30,6 +31,8 @@ const initialState = {
   clockin:null,
   attendanceReport:[],
   holidays:[],
+  events:[],
+  eventsStatus:initialThunkState,
   getUserByIdStatus: initialThunkState,
   updateUserStatus: initialThunkState,
   uploadProfilePicStatus: initialThunkState,
@@ -172,6 +175,21 @@ const userSlice = createSlice({
         error: action.payload,
       };
     });
+
+
+    builder.addCase(fetchEvents.pending, state => {
+      state.eventsStatus = defaultThunkLoadingState;
+    });
+    builder.addCase(fetchEvents.fulfilled, (state, action) => {
+      state.eventsStatus = defaultThunkSuccessState;
+      state.events = action.payload;
+    });
+    builder.addCase(fetchEvents.rejected, (state, action) => {
+      state.eventsStatus = {
+        ...defaultThunkFailureState,
+        error: action.payload,
+      };
+    });
   },
 });
 
@@ -183,3 +201,4 @@ export const projectsSelector = state=> state?.user?.projects||[];
 export const clockinSelector = state=> state?.user?.clockin||{};
 export const attendanceReportSelector = state=> state?.user?.attendanceReport||[];
 export const holidaysSelector = state=> state?.user?.holidays||[];
+export const eventsSelector = state=> state?.user?.events||[];

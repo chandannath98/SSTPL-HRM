@@ -58,13 +58,13 @@ const WelcomeScreen = () => {
               textStyle={{fontWeight: 'bold',color:R.colors.PRIMARY_LIGHT}}
             />
             <Button
-              title={'Login As A Client'}
+              title={'Login As A admin'}
               buttonStyle={{
                 width: '80%',
                 // backgroundColor:"#4dc8d8",
                 backgroundColor:R.colors.PRIMARY_LIGHT
               }}
-              // onPress={() => navigation.navigate(ScreensNameEnum.REGISTRATION_SCREEN)}
+              onPress={() => navigation.navigate(ScreensNameEnum.ADMIN_SCREEN)}
               textColor={"#021761"}
               textStyle={{fontWeight: 'bold'}}
             />

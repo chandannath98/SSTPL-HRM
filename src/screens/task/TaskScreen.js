@@ -102,7 +102,7 @@ const Item = ({item, navigation}) => (
   <Image source={require('../../assets/Images/Image.png')} />
 </View> */}
     <View style={{flex: 1, justifyContent: 'space-between'}}>
-      <Text style={[styles.nameText]}>{item.project_name}</Text>
+      <Text style={[styles.nameText]}>{item.heading}</Text>
       <Text style={[styles.dateText]}>
         {`${moment(item.start_date).format('DD MMM YY')} - ${moment(
           item.deadline,
@@ -114,7 +114,7 @@ const Item = ({item, navigation}) => (
       <Pressable style={styles.pendingView}>
         <Text style={styles.pendingText}>{item?.status}</Text>
       </Pressable>
-      {/* <Pressable
+      <Pressable
         style={styles.cancelView}
         onPress={() =>
           navigation.navigate(ScreensNameEnum.TASK_DETAILS_SCREEN, {
@@ -122,11 +122,12 @@ const Item = ({item, navigation}) => (
           })
         }>
         <Text style={styles.cancelText}>View Task</Text>
-      </Pressable> */}
+      </Pressable>
     </View>
   </View>
 );
 export default TaskScreen;
+export {Item}
 const styles = StyleSheet.create({
   textview: {
     flexDirection: 'row',

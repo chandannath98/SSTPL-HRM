@@ -1,5 +1,5 @@
-import {View, Text, StyleSheet} from 'react-native';
-import React from 'react';
+import {View, Text, StyleSheet, FlatList} from 'react-native';
+import React, { useState } from 'react';
 import ScreenWrapper from '../../library/wrapper/ScreenWrapper';
 import ChildScreensHeader from '../../components/MainComponents/ChildScreensHeader';
 import R from '../../resources/R';
@@ -7,6 +7,15 @@ import {ScrollView} from 'react-native-gesture-handler';
 import Icon from 'react-native-vector-icons/MaterialCommunityIcons';
 
 const TimesheetScreen = () => {
+
+  const [data, setData] = useState([
+    {
+    id:"Id",task:"Task",employee:"Employee",startData:"Start Date",endDate:"End Date",hours: "Hours"
+  },
+    {
+    id:"i00000000d",task:"Task",employee:"Employee",startData:"Start Date",endDate:"End Date",hours: "Hours"
+  },
+])
   return (
     <ScreenWrapper header={false}>
       <ChildScreensHeader
@@ -14,64 +23,27 @@ const TimesheetScreen = () => {
         screenName={'Timesheet'}
       />
       <ScrollView horizontal={true}>
-        <View style={styles.placeview}>
-          <View style={styles.textinput}>
-            <Text>id</Text>
-            <Icon
-              name="swap-vertical"
-              size={15}
-              color={R.colors.PRIMARI_DARK}
-              style={{}}
-            />
-            <Text>Code</Text>
-            <Icon
-              name="swap-vertical"
-              size={15}
-              color={R.colors.PRIMARI_DARK}
-              style={{}}
-            />
-            <Text>Task</Text>
-            <Icon
-              name="swap-vertical"
-              size={15}
-              color={R.colors.PRIMARI_DARK}
-              style={{}}
-            />
-            <Text>Employee</Text>
-            <Icon
-              name="swap-vertical"
-              size={15}
-              color={R.colors.PRIMARI_DARK}
-              style={{}}
-            />
-            <View style={{flexDirection: 'column'}}>
-              <Text>Start Time</Text>
-            </View>
-            <Icon
-              name="swap-vertical"
-              size={15}
-              color={R.colors.PRIMARI_DARK}
-              style={{}}
-            />
-            <View style={{flexDirection: 'column'}}>
-              <Text>End Time</Text>
-            </View>
-            <Icon
-              name="swap-vertical"
-              size={15}
-              color={R.colors.PRIMARI_DARK}
-              style={{}}
-            />
-            <Text>Totol Hours</Text>
-            <Icon
-              name="swap-vertical"
-              size={15}
-              color={R.colors.PRIMARI_DARK}
-              style={{}}
-            />
-            <Text>Action</Text>
-          </View>
+        {/* <View style={styles.placeview}> */}
+          
+     <FlatList
+     data={data}
+     renderItem={({item,index})=>(
+
+      <View style={{flexDirection:"row",gap:15}}>
+
+<Text style={{width:100}}>{item?.id}</Text>
+<Text style={{width:100}}>{item?.task}</Text>
+<Text style={{width:100}}>{item?.employee}</Text>
+<Text style={{width:100}}>{item?.startData}</Text>
+<Text style={{width:100}}>{item?.endDate}</Text>
+<Text style={{width:100}}>{item?.hours}</Text>
+
         </View>
+
+     )}   
+     /> 
+          
+        {/* </View> */}
       </ScrollView>
     </ScreenWrapper>
   );

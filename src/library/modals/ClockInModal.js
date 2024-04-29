@@ -14,6 +14,7 @@ import {useDispatch, useSelector} from 'react-redux';
 import {clockinSelector} from '../../store/slices/user/user.slice';
 import {fetchClockinStatus} from '../../store/actions/userActions';
 import Loader from '../commons/Loader';
+import GetLocation from 'react-native-get-location';
 /*
  * This function is used to create the confirmation modal
  * @author Kindajobs <mohitkumar.webdev@gmail.com>
@@ -76,57 +77,104 @@ const ClockInModal = ({
 
     // Get current location
     setLoading(true);
-    Geolocation.getCurrentPosition(
-      position => {
-        const {latitude, longitude} = position.coords;
-        console.log("__________",{latitude, longitude});
-        setCurrentLocation({latitude, longitude});
+    GetLocation.getCurrentPosition({
+      enableHighAccuracy: true,
+      timeout: 60000,
+  })
+  .then(position => {
+    const {latitude, longitude} = position;
+    console.log("__________",{latitude, longitude});
+    setCurrentLocation({latitude, longitude});
 
-        // Reverse geocode to get address
-        Geocoder.from(latitude, longitude)
-          .then(json => {
-            console.log('______', json.results[0].formatted_address);
-            const addressComponent = json.results[0].formatted_address;
-            setCurrentAddress(addressComponent);
-            setLoading(false);
-          })
-          .catch(error => {
-            console.warn(error);
-            setLoading(false);
-          });
-      },
-      error => {
-        alert(error.message);
-        console.log(error);
+    // Reverse geocode to get address
+    Geocoder.from(latitude, longitude)
+      .then(json => {
+        console.log('______', json.results[0].formatted_address);
+        const addressComponent = json.results[0].formatted_address;
+        setCurrentAddress(addressComponent);
         setLoading(false);
-      },
-      {enableHighAccuracy: true, timeout: 60000, maximumAge: 1000},
-    );
+      })
+      .catch(error => {
+        console.warn(error);
+        setLoading(false);
+      });
+  })
+  .catch(error => {
+      const { code, message } = error;
+      console.warn(code, message);
+  })
+    // Geolocation.getCurrentPosition(
+    //   position => {
+    //     const {latitude, longitude} = position.coords;
+    //     console.log("__________",{latitude, longitude});
+    //     setCurrentLocation({latitude, longitude});
+
+    //     // Reverse geocode to get address
+    //     Geocoder.from(latitude, longitude)
+    //       .then(json => {
+    //         console.log('______', json.results[0].formatted_address);
+    //         const addressComponent = json.results[0].formatted_address;
+    //         setCurrentAddress(addressComponent);
+    //         setLoading(false);
+    //       })
+    //       .catch(error => {
+    //         console.warn(error);
+    //         setLoading(false);
+    //       });
+    //   },
+    //   error => {
+    //     console.log("*****************************************")
+    //     alert(error.message);
+    //     console.log(error);
+    //     setLoading(false);
+    //   },
+    //   {enableHighAccuracy: false, timeout: 60000, maximumAge: 60000},
+    // );
   }
 
   const requestLocationPermission = async () => {
     try {
-      const granted = await PermissionsAndroid.request(
+      const grantedFineLocation = await PermissionsAndroid.request(
         PermissionsAndroid.PERMISSIONS.ACCESS_FINE_LOCATION,
         {
           title: 'Location Permission',
-          message: 'This app requires access to your location.',
+          message: 'App needs access to your location for better services.',
           buttonNeutral: 'Ask Me Later',
           buttonNegative: 'Cancel',
           buttonPositive: 'OK',
-        },
+        }
       );
-      if (granted === PermissionsAndroid.RESULTS.GRANTED) {
-        console.log('Location permission granted');
+
+      const grantedCoarseLocation = await PermissionsAndroid.request(
+        PermissionsAndroid.PERMISSIONS.ACCESS_COARSE_LOCATION,
+        {
+          title: 'Location Permission',
+          message: 'App needs access to your location for better services.',
+          buttonNeutral: 'Ask Me Later',
+          buttonNegative: 'Cancel',
+          buttonPositive: 'OK',
+        }
+      );
+
+      if (
+        grantedFineLocation === PermissionsAndroid.RESULTS.GRANTED &&
+        grantedCoarseLocation === PermissionsAndroid.RESULTS.GRANTED
+      ) {
+        console.log(grantedFineLocation,grantedCoarseLocation)
         fetchCurrentPosition();
+
+        // Both permissions granted, you can now access the location
+        // Proceed with your location-based functionality
       } else {
-        console.log('Location permission denied');
-        // requestLocationPermission()
+        // Permissions denied, handle accordingly
+        // You may want to inform the user about the importance of these permissions
+        // and guide them to enable permissions in the app settings
       }
     } catch (err) {
       console.warn(err);
     }
   };
+
 
   function getCurrentDateTime() {
     const currentDate = new Date();
@@ -183,7 +231,7 @@ const ClockInModal = ({
     }
   };
 
-  console.log(clockin?.attendance?.id, clockin);
+  // console.log(clockin?.attendance?.id, clockin);
   return (
     <Modal
       isVisible={isVisible}

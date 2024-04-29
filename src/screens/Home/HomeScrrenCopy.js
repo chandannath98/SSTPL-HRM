@@ -29,93 +29,41 @@ import {
     fetchClockinStatus,
   } from '../../store/actions/userActions';
   import moment from 'moment';
-import AsyncStorage from '@react-native-async-storage/async-storage';
-import { AuthContext } from '../../store/contexts/AuthContext';
   const DATA = [
     {
       id: 1,
       icon: 'calendar-check-outline',
-      title: 'Profile',
-      screen: ScreensNameEnum.ACCOUNT_SCREEN,
-      color: '#1DB7AE',
-      image: require('../../assets/Images/1.png'),
+      title: 'Attendance',
+      screen: ScreensNameEnum.ATTENDANCEREPORT_SCREEN,
+      color: R.colors.LIGHTGREEN,
+      image: require('../../assets/Images/icon1.png'),
     },
     {
       id: 2,
-      icon: 'gift-open-outline',
-      title: 'Document',
-      screen: null,
-      color: '#2C5CB7',
-      image: require('../../assets/Images/5.png'),
+      icon: 'party-popper',
+      title: 'Leaves',
+      screen: ScreensNameEnum.LEAVE_SCREEN,
+      color: R.colors.RED,
+      image: require('../../assets/Images/icon2.png'),
     },
     {
       id: 3,
       icon: 'party-popper',
-      title: 'Attendence',
-      screen: ScreensNameEnum.ATTENDANCEREPORT_SCREEN,
-      color: '#158780',
-      image: require('../../assets/Images/2.png'),
-    },
-   
-    {
-      id: 7,
-      icon: 'gift-open-outline',
-      title: 'Payslip',
-      screen: null,
-      color: '#C97C00',
-      image: require('../../assets/Images/7.png'),
-    },
-    {
-      id: 8,
-      icon: 'gift-open-outline',
-      title: 'Events',
-      screen:null,
-      color: '#4DB948',
-      image: require('../../assets/Images/8.png'),
-    },
-    {
-      id: 9,
-      icon: 'gift-open-outline',
-      title: 'Holidays',
+      title: 'Holiday',
       screen: ScreensNameEnum.HOLIDAY_SCREEN,
-      color: '#AA1224',
-      image: require('../../assets/Images/9.png'),
+      color: '#FFA201',
+      image: require('../../assets/Images/icon3.png'),
     },
     {
-      id: 10,
+      id: 4,
       icon: 'gift-open-outline',
-      title: 'Appriciation',
-      screen: null,
-      color: '#646762',
-      image: require('../../assets/Images/10.png'),
-    },
-    {
-      id: 11,
-      icon: 'gift-open-outline',
-      title: 'Timesheet',
-      screen: null,
-      color: '#FF5C3A',
-      image: require('../../assets/Images/11.png'),
-    },
-    {
-      id: 12,
-      icon: 'gift-open-outline',
-      title: 'Logout',
-      screen: null,
-      color: '#FFA200',
-      image: require('../../assets/Images/12.png'),
+      title: 'Appreciation',
+      screen: ScreensNameEnum.APPRECIATION_SCREEN,
+      color: R.colors.GREEN,
+      image: require('../../assets/Images/icon4.png'),
     },
   ];
-  const ProfileScreen = ({navigation}) => {
-    const HandleLogout = () => {
-      const logout = async () => {
-        await AsyncStorage.removeItem("USER_CONTEXT")
-        await AsyncStorage.removeItem("JWT")
-        await AuthContext.signOut();
-      };
-      logout();
-      return <View></View>;
-    };
+  const HomeScreen = ({navigation}) => {
     const dispatch = useDispatch();
     const [email, setEmail] = useState('');
     const [modalVis, setModalVis] = useState(false);
@@ -139,23 +87,17 @@ import { AuthContext } from '../../store/contexts/AuthContext';
     // console.log('______________', clockin);
   
     const Item = ({item}) => (
-      <Pressable
-      android_ripple={{color: 'gray', borderless: false}}
-      onPress={() =>item?.id==12?HandleLogout():item.screen? navigation.navigate(item.screen):{}}
-      
-      style={[styles.cardView]}>
-        <View
+      <View style={[styles.cardView, {width: 130, marginRight: 10}]}>
+        <Pressable
+          onPress={() => navigation.navigate(item.screen)}
           style={{justifyContent: 'space-between', alignItems: 'center'}}>
           {/* <Icon name={item.icon} size={50} color={item?.color} /> */}
-          <View  style={{backgroundColor:item?.color,padding:15,borderRadius:50}} >
-  
-          <Image source={ item?.image} style={{height:30,aspectRatio:1}} />
-          </View>
+          <Image source={ item?.image} />
           <Text style={{color: R.colors.PRIMARI_DARK, fontWeight: 'bold'}}>
             {item.title}
           </Text>
-        </View>
-      </Pressable>
+        </Pressable>
+      </View>
     );
     return (
       <ScreenWrapper header={false}>
@@ -163,74 +105,20 @@ import { AuthContext } from '../../store/contexts/AuthContext';
           backgroundColor={R.colors.PRIMARY_LIGHT}
           barStyle={'dark-content'}
         />
-        <ChildScreensHeader
-        style={{backgroundColor: R.colors.PRIMARY_LIGHT}}
-        screenName={'Profile'}
-      />
         <ImageBackground
           source={require('../../assets/Images/mainbg.png')}
           resizeMode="stretch"
           style={styles.container}>
           <View style={styles.headerView}>
-            {/* <Icon
+            <Icon
               onPress={() => navigation.toggleDrawer()}
               name="menu"
               size={35}
               color={R.colors.PRIMARI_DARK}
-            /> */}
-           
-            <View style={{ flexDirection: 'column', alignItems: 'center',flexWrap:"wrap",marginVertical:30}}>
-              <Image
-                source={{uri: user?.image_url}}
-                style={{height: 50, width: 50, borderRadius: 30, marginLeft: 20}}
-              />
-              <View style={{flexDirection: 'column'}}>
-                <Text style={styles.userName}>
-                  {user?.name ? user.name : 'N/A'}
-                </Text>
-                <Text
-                  style={[
-                    styles.userName,
-                    {color: R.colors.DARKGRAY, fontSize: R.fontSize.L},
-                  ]}>
-                   {user?.employee_detail?.designation?.name} 
-                </Text>
-              </View>
-            <View
-              style={{
-                // flex: 1,
-                justifyContent: 'flex-end',
-                alignContent: 'flex-end',
-                alignItems: 'flex-end',
-                paddingHorizontal: 5,
-              }}>
-              {/* <Button
-                title={
-                  clockin?.attendance?.clock_out_time == null &&
-                  clockin?.attendance != null
-                    ? 'Clock out'
-                    : 'Clock in'
-                }
-                buttonStyle={{
-                  alignSelf: 'left',
-                  width: '50%',
-                  marginTop: 20,
-                  backgroundColor:
-                    clockin?.attendance?.clock_out_time == null &&
-                    clockin?.attendance != null
-                      ? 'red'
-                      : R.colors.primary,
-                }}
-                textStyle={{fontWeight: 'bold'}}
-                onPress={() => setModalVis(true)}
-              /> */}
-            </View>
+            />
+            <Icon name="bell-outline" size={35} color={R.colors.PRIMARI_DARK} />
           </View>
-            {/* <Icon name="bell-outline" size={35} color={R.colors.PRIMARI_DARK} /> */}
-          </View>
-  
-          
-          {/* <View
+          <View
             style={{
               flexDirection: 'row',
               borderBottomWidth: 0.5,
@@ -282,10 +170,10 @@ import { AuthContext } from '../../store/contexts/AuthContext';
                       : R.colors.primary,
                 }}
                 textStyle={{fontWeight: 'bold'}}
-                onPress={() => setModalVis(true)}
+                onPress={() => navigation.navigate(ScreensNameEnum.ATTENDANCE_SCREEN)}
               />
             </View>
-          </View> */}
+          </View>
   
           {/* <View style={styles.filterView}>
             <View style={styles.searchView}>
@@ -306,27 +194,201 @@ import { AuthContext } from '../../store/contexts/AuthContext';
               />
             </View>
           </View> */}
-          <View style={[styles.headerView, {paddingVertical: 20}]}>
-            {/* <Text style={styles.catText}>HR Management</Text>
-            <Text style={styles.seeAllText}></Text> */}
+          <View style={[styles.headerView, {paddingVertical: 0}]}>
+            <Text style={styles.catText}>HR Management</Text>
+            <Text style={styles.seeAllText}></Text>
           </View>
           <View style={styles.categoryView}>
             <FlatList
               data={DATA}
               renderItem={({item}) => <Item item={item} />}
               keyExtractor={item => item.id}
-              numColumns={3}
-              contentContainerStyle={{gap:20}}
-              // horizontal={true}
-              // showsHorizontalScrollIndicator={false}
+              horizontal={true}
+              showsHorizontalScrollIndicator={false}
             />
           </View>
-          {/* <View style={[styles.headerView, {paddingVertical: 10}]}>
+          <View style={[styles.headerView, {paddingVertical: 10}]}>
             <Text style={styles.catText}>Work Management</Text>
             <Text style={styles.seeAllText}></Text>
-          </View> */}
+          </View>
   
-         
+          <View style={styles.categoryView}>
+            <View style={[styles.cardView, {width: '32%'}]}>
+              <Pressable
+                onPress={() =>
+                  navigation.navigate(ScreensNameEnum.PROJECT_SCREEN)
+                }
+                style={{justifyContent: 'space-between', alignItems: 'center'}}>
+                {/* <Icon name="camera-document" size={50} color={R.colors.RED} /> */}
+                <Image source={require('../../assets/Images/icon5.png')} />
+                <Text style={{color: R.colors.PRIMARI_DARK, fontWeight: 'bold'}}>
+                  Projects
+                </Text>
+              </Pressable>
+            </View>
+            <View style={[styles.cardView, {width: '32%'}]}>
+              <Pressable
+                onPress={() => navigation.navigate(ScreensNameEnum.TASK_SCREEN)}
+                style={{justifyContent: 'space-between', alignItems: 'center'}}>
+                {/* <Icon name="file-tree" size={50} color={R.colors.LIGHTGREEN} />
+                 */}
+                <Image source={require('../../assets/Images/icon6.png')} />
+                <Text style={{color: R.colors.PRIMARI_DARK, fontWeight: 'bold'}}>
+                  Tasks
+                </Text>
+              </Pressable>
+            </View>
+            <View style={[styles.cardView, {width: '32%'}]}>
+              <Pressable
+                onPress={() =>
+                  navigation.navigate(ScreensNameEnum.EVENTS_SCREENS)
+                }
+                style={{justifyContent: 'space-between', alignItems: 'center'}}>
+                {/* <Icon name="archive-clock" size={50} color={R.colors.primary} />
+                 */}
+                <Image source={require('../../assets/Images/icon7.png')} />
+                <Text style={{color: R.colors.PRIMARI_DARK, fontWeight: 'bold'}}>
+                  Events
+                </Text>
+              </Pressable>
+            </View>
+          </View>
+          <View style={[styles.headerView, {alignItems: 'center'}]}>
+            <Text style={styles.catText}>Current Task</Text>
+            <Text
+              style={[styles.seeAllText, {padding: 10}]}
+              onPress={() => navigation.navigate(ScreensNameEnum.TASK_SCREEN)}>
+              See All
+            </Text>
+          </View>
+          {tasks?.length >= 1 ? (
+            <View style={styles.taskView}>
+              {/* <View style={styles.ImageView}>
+              <Image source={require('../../assets/Images/Image.png')} />
+            </View> */}
+              <View style={{flex: 1, justifyContent: 'space-between'}}>
+                <Text style={[styles.nameText]}>{tasks[0].heading}</Text>
+                <Text style={[styles.dateText]}>
+                  {`${moment(tasks[0].start_date).format('DD MMM YY')} - ${moment(
+                    tasks[0].due_date,
+                  ).format('DD MMM YY')}`}
+                </Text>
+                {/* <Text>Sick Leave Request</Text> */}
+              </View>
+              <View style={styles.acceptView}>
+                <Pressable style={styles.pendingView}>
+                  <Text style={styles.pendingText}>{tasks[0]?.status}</Text>
+                </Pressable>
+                {/* <Pressable
+                  style={styles.cancelView}
+                  onPress={() =>
+                    navigation.navigate(ScreensNameEnum.TASK_DETAILS_SCREEN, {
+                      taskId: tasks[0]?.id,
+                    })
+                  }
+                  >
+                  <Text style={styles.cancelText}>View Task</Text>
+                </Pressable> */}
+              </View>
+            </View>
+          ) : (
+            <Text
+              style={{
+                textAlign: 'center',
+                fontWeight: 'bold',
+                color: R.colors.LIGHTGRAY,
+              }}>
+              No Current Task Available
+            </Text>
+          )}
+          {/* <View style={[styles.headerView, {paddingVertical: 10}]}>
+            <Text style={styles.catText}>Attendance Of July</Text>
+            <Text style={styles.seeAllText}></Text>
+          </View> */}
+          {/* <View
+            style={{
+              flexDirection: 'row',
+              margin: 10,
+              justifyContent: 'space-evenly',
+              height: '18%',
+            }}>
+            <View style={styles.attView}>
+              <Text style={styles.presentText}>54</Text>
+              <Text
+                style={{
+                  fontWeight: 'bold',
+                  fontSize: 20,
+                  paddingTop: 10,
+                  color: R.colors.PRIMARI_DARK,
+                }}>
+                Present
+              </Text>
+            </View>
+  
+            <View style={styles.attView}>
+              <Text style={styles.lateText}>15</Text>
+              <Text
+                style={{
+                  fontWeight: 'bold',
+                  fontSize: 20,
+                  color: R.colors.PRIMARI_DARK,
+                  paddingTop: 10,
+                }}>
+                Late
+              </Text>
+            </View>
+            <View style={styles.attView}>
+              <Text
+                style={[
+                  styles.absentText,
+                  {
+                    color: '#FF5C3A',
+                  },
+                ]}>
+                20
+              </Text>
+              <Text
+                style={{
+                  fontWeight: 'bold',
+                  fontSize: 20,
+                  color: R.colors.PRIMARI_DARK,
+                  paddingTop: 10,
+                }}>
+                Absent
+              </Text>
+            </View>
+          </View> */}
+          {/* <View
+            style={{
+              flexDirection: 'row',
+              justifyContent: 'space-around',
+              marginTop: 40,
+            }}>
+            <Icon
+              name="home-outline"
+              size={35}
+              color={R.colors.primary}
+              style={{}}
+            />
+            <Icon
+              name="subtitles-outline"
+              size={35}
+              color={R.colors.primary}
+              style={{}}
+            />
+            <Icon
+              name="email-outline"
+              size={35}
+              color={R.colors.primary}
+              style={{}}
+            />
+            <Icon
+              name="account-outline"
+              size={35}
+              color={R.colors.primary}
+              style={{}}
+            />
+          </View> */}
         </ImageBackground>
         {modalVis && (
           <ClockInModal isVisible={modalVis} onModalClose={setModalVis} />
@@ -335,18 +397,16 @@ import { AuthContext } from '../../store/contexts/AuthContext';
     );
   };
   
-  export default ProfileScreen;
+  export default HomeScreen;
   
   const styles = StyleSheet.create({
     container: {
       flex: 1,
     },
     headerView: {
-      // flexDirection: 'row',
+      flexDirection: 'row',
       justifyContent: 'space-between',
       paddingHorizontal: 10,
-      alignItems:"center",
-      // flex:1
       // borderBottomWidth:0.5
     },
     helloText: {
@@ -415,7 +475,6 @@ import { AuthContext } from '../../store/contexts/AuthContext';
       textAlignVertical: 'center',
     },
     cardView: {
-      marginHorizontal:'3%',
       // backgroundColor: R.colors.PRIMARY_LIGHT,
       // borderRadius: 20,
       // padding: 5,
@@ -429,10 +488,10 @@ import { AuthContext } from '../../store/contexts/AuthContext';
       // shadowColor: R.colors.LIGHTGRAY,
       // elevation:10
       backgroundColor: R.colors.PRIMARY_LIGHT,
-      borderRadius: 10,
+      borderRadius: 5,
       padding: 5,
       paddingVertical: 10,
-      // borderColor: R.colors.LIGHTGRAY,
+      borderColor: R.colors.LIGHTGRAY,
       // Add elevation for Android
       elevation: 5,
       // Set shadow properties for iOS
@@ -444,11 +503,10 @@ import { AuthContext } from '../../store/contexts/AuthContext';
       shadowRadius: 5, // Adjust as needed
       shadowColor: R.colors.LIGHTGRAY,
       // Add dimensions to the container
-      width: '28%', // Adjust as needed
-      height: 120, // Adjust as needed
-      // borderColor: '#ccc',
-      // borderWidth: 0.5,
-      
+      width: 200, // Adjust as needed
+      height: 100, // Adjust as needed
+      borderColor: '#ccc',
+      borderWidth: 0.5,
     },
     taskView: {
       flexDirection: 'row',

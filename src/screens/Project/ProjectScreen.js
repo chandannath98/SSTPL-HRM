@@ -25,7 +25,7 @@ const ProjectScreen = () => {
       console.log(error);
     }
   };
-  console.log('Projects', projects);
+  console.log('Projects', JSON.stringify(projects));
   return (
     <ScreenWrapper header={false}>
       <ChildScreensHeader
@@ -143,15 +143,16 @@ const Item = ({item, navigation}) => (
       <Pressable style={styles.pendingView}>
         <Text style={styles.pendingText}>{item?.status}</Text>
       </Pressable>
-      {/* <Pressable
+      <Pressable
         style={styles.cancelView}
         onPress={() =>
-          navigation.navigate(ScreensNameEnum.TASK_DETAILS_SCREEN, {
-            taskId: item?.id,
+          navigation.navigate(ScreensNameEnum.PROJECT_DETAILS_SCREEN, {
+            projectId: item?.id,
           })
         }>
-        <Text style={styles.cancelText}>View Task</Text>
-      </Pressable> */}
+          
+        <Text style={styles.cancelText}>View Project</Text>
+      </Pressable>
     </View>
   </View>
   // <View

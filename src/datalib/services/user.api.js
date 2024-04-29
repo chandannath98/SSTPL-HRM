@@ -23,6 +23,22 @@ class AuthenticationApi extends SecuredBaseApi {
     }
   }
 
+  async fetchLeaves() {
+    try {
+      const response = await this.securedAxios.get(
+        getApiUri('/leave'),
+      );
+      console.log(response);
+
+      if (response.data) {
+        return response.data;
+      }
+      return false;
+    } catch (err) {
+      console.error(err);
+      return false;
+    }
+  }
   async fetchClockinStatus() {
     try {
       const response = await this.securedAxios.get(
@@ -74,7 +90,22 @@ class AuthenticationApi extends SecuredBaseApi {
     }
   }
 
+  async fetchUserEvents() {
+    try {
+      const response = await this.securedAxios.get(getApiUri('/event'));
+      console.log('subtask.', response);
+      if (response.data) {
+        return response.data;
+      }
+      return false;
+    } catch (err) {
+      console.error(err);
+      return false;
+    }
+  }
+
   async clockIn({currentLatitude, currentLongitude, working_from}) {
+    console.log({currentLatitude, currentLongitude, working_from})
     try {
       const response = await this.securedAxios.post(
         getApiUri('/attendance/clock-in'),

@@ -15,17 +15,18 @@ import AddBankScreen from '../../screens/profiles/bank-details/AddBankScreen';
 // import ListBankScreen from '../../screens/profiles/bank-details/ListBankScreen';
 import SelectACardScreen from '../../screens/payment/SelectACardScreen';
 import UserProfileScreen from '../../screens/profiles/UserProfileScreen';
-import ProfileScreen from '../../screens/profiles/ProfileScreen';
+// import ProfileScreen from '../../screens/profiles/ProfileScreen';
 import {routeName} from '../routeName';
 import {screenOptions} from '../screenOptions';
 import WorkWithUs from '../../screens/profiles/WorkWithUs';
 import UserLocation from '../../screens/profiles/UserLocation';
+import EditScreen from '../../screens/profiles/EditScreen';
 const Stack = createStackNavigator();
 
 const ProfileStack = ({}) => {
   return (
     <Stack.Navigator screenOptions={screenOptions}>
-      <Stack.Screen name={routeName.profile} component={ProfileScreen} />
+      <Stack.Screen name={routeName.profile} component={EditScreen} />
       <Stack.Screen
         name={routeName.userProfile}
         component={UserProfileScreen}

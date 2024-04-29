@@ -1,5 +1,5 @@
-import {View, Text, ImageBackground} from 'react-native';
-import React, {  useEffect } from 'react';
+import {View, Text, ImageBackground, FlatList} from 'react-native';
+import React, {  useEffect, useState } from 'react';
 import ScreenWrapper from '../../library/wrapper/ScreenWrapper';
 import ChildScreensHeader from '../../components/MainComponents/ChildScreensHeader';
 import R from '../../resources/R';
@@ -8,12 +8,16 @@ import moment from 'moment';
 import { fetchHolidays } from '../../store/actions/userActions';
 import { useDispatch, useSelector } from 'react-redux';
 import { holidaysSelector } from '../../store/slices/user/user.slice';
+import HolidayItem from './Components/HolidayItem';
 
 const HolidayScreen = () => {
   const dispatch = useDispatch()
   
 const Holidays = useSelector(holidaysSelector)
 console.log("Holidays",Holidays);
+
+const [selectedItem, setSelectedItem] = useState({})
+
 
   useEffect(() => {
     if (Holidays?.length < 1) {
@@ -33,8 +37,16 @@ console.log("Holidays",Holidays);
     '2024-03-15': {marked: true, dotColor: 'red'},
   };
 
+  const holidaysList ={}
+ Holidays?.forEach((i,index)=>{
+
+    holidaysList[i?.date?.slice(0,10)]= { marked: true , color: 'blue',...i} ;
+  
+  })
+
+  console.log('holidaysList',holidaysList)
   const events = {
-    '2024-03-12': {marked: true, dotColor: 'blue'},
+    '2024-04-12': {marked: true, dotColor: 'blue'},
     '2024-03-18': {marked: true, dotColor: 'blue'},
   };
   return (
@@ -50,13 +62,29 @@ console.log("Holidays",Holidays);
         source={require('../../assets/Images/mainbg.png')}
         style={{flex: 1, justifyContent: "flex-start"}}>
         <Calendar
+        onMonthChange={month=>{
+          console.log(month)
+        }}
+        onDayPress={day=>{
+          setSelectedItem(holidaysList[day.dateString])
+          console.log(day)
+        }}
           markedDates={{
-            ...leaves,
-            ...events,
+            ...holidaysList,
+            ...holidaysList,
           }}
           style={{ borderWidth: 0}}
           // Your other calendar configurations here
         />
+{/* 
+        <FlatList
+        data={Holidays}
+        renderItem={({item,index})=><HolidayItem item={item} index={index} />}
+        /> */}
+
+{selectedItem &&
+<HolidayItem item={selectedItem} index={0} />
+}
       </ImageBackground>
     </ScreenWrapper>
   );

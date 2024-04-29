@@ -46,9 +46,11 @@ const styles = StyleSheet.create({
     flex: 1,
     overflow: 'visible',
     zIndex: 9,
-    backgroundColor: '#fff',
+    // backgroundColor: 'red',
   },
   container: {
     flex: 1,
+    // backgroundColor: 'red',
+
   },
 });
