@@ -49,7 +49,7 @@ const AttendancereportScreen = () => {
   const [data, setData] = useState([]);
   const [dates, setDates] = useState([])
   const [modalVisible, setModalVisible] = useState(false);
-  const [selectedMonthYear, setSelectedMonthYear] = useState(`${months[new Date().getMonth()+1].label} ${new Date().getFullYear()}`);
+  const [selectedMonthYear, setSelectedMonthYear] = useState(`${months[new Date().getMonth()].label} ${new Date().getFullYear()}`);
 
   const handleOpenModal = () => {
     setModalVisible(true);

@@ -250,13 +250,13 @@ const HomeScreen = ({navigation}) => {
         </View>
 
         <Button
-              title="Mark Attendence"
-              // title={
-              //   clockin?.attendance?.clock_out_time == null &&
-              //   clockin?.attendance != null
-              //     ? 'Clock out'
-              //     : 'Clock in'
-              // }
+              
+              title={
+                clockin?.attendance?.clock_out_time == null &&
+                clockin?.attendance != null
+                  ? 'Clock out'
+                  : 'Mark Attendence'
+              }
               buttonStyle={{
                 alignSelf: 'center',
                 borderRadius:15,

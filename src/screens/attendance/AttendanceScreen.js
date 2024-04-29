@@ -1,4 +1,4 @@
-import {View, Text, StyleSheet, Image, Dimensions, Platform, PermissionsAndroid, Alert, Pressable} from 'react-native';
+import {View, Text, StyleSheet, Image, Dimensions, Platform, PermissionsAndroid, Alert, Pressable, TouchableOpacity} from 'react-native';
 import React, { useEffect, useState } from 'react';
 import ScreenWrapper from '../../library/wrapper/ScreenWrapper';
 import ChildScreensHeader from '../../components/MainComponents/ChildScreensHeader';
@@ -45,14 +45,18 @@ const AttendanceScreen = ({navigation,route}) => {
   const [currentAddress, setCurrentAddress] = useState(null);
   const [imageUri, setImageUri] = useState(null);
   // console.log(currentLocation, currentAddress);
+
+  const chechLocationPermission =()=>{
+    if (Platform.OS === 'android') {
+      requestLocationPermission();
+    } else {
+      Geolocation.requestAuthorization();
+    }
+  }
   useFocusEffect(
     React.useCallback(() => {
       // Request permission to access location
-      if (Platform.OS === 'android') {
-        requestLocationPermission();
-      } else {
-        Geolocation.requestAuthorization();
-      }
+      chechLocationPermission()
       // fetchCurrentPosition();
     }, [])
   );
@@ -158,6 +162,10 @@ function deg2rad(deg) {
 function isWithinRange(currentLat, currentLon, targetLat, targetLon, range) {
   const distance = getDistanceFromLatLonInKm(currentLat, currentLon, targetLat, targetLon);
   const distanceInMeters = distance * 1000; // Convert distance to meters
+  if(!(distanceInMeters <= range)){
+
+    Alert.alert(`You are ${Math.ceil(distanceInMeters-range)}M away from the office range`)
+  }
   return distanceInMeters <= range;
 }
 
@@ -171,14 +179,7 @@ const currentLatitude = currentLocation?.latitude
 const currentLongitude = currentLocation?.longitude;
 
 // Check if current location is within the range of the target location
-const withinRange = isWithinRange(currentLatitude, currentLongitude, targetLatitude, targetLongitude, rangeInMeters);
 
-
-if (withinRange) {
-  console.log("Current location is within the range of the target location.");
-} else {
-  console.log("Current location is not within the range of the target location.");
-}
 
 
   function getCurrentDateTime() {
@@ -230,10 +231,12 @@ if (withinRange) {
 
 
   const handleClockin = async () => {
-const withinRange = isWithinRange(currentLatitude, currentLongitude, targetLatitude, targetLongitude, rangeInMeters);
+const withinRange = office=="Office"?  isWithinRange(currentLatitude, currentLongitude, targetLatitude, targetLongitude, rangeInMeters):true;
 if(withinRange){
     setLoading(true)
     try {
+//       const targetLatitude = 28.547884; // Latitude of the target location
+// const targetLongitude = 77.251276; // Longitude of the target location
       const res = await new UserApi().clockIn({
         currentLatitude: currentLocation?.latitude
           ? currentLocation?.latitude
@@ -252,8 +255,6 @@ if(withinRange){
     } catch (error) {
       console.log(error);
     }
-  }else{
-    Alert.alert("Current location is not within the site range")
   }
   
 };
@@ -305,7 +306,10 @@ if(withinRange){
             fontSize: 15,
             color: R.colors.PRIMARI_DARK,
           }}>
-          Clock In
+          {clockin?.attendance?.clock_out_time == null &&
+            clockin?.attendance != null
+              ? 'Clock out'
+              : 'Clock In'}
         </Text>
         <View 
        style={{
@@ -446,9 +450,22 @@ style={{
         />
       </View>
       <View style={styles.textbar}>
-        <View style={styles.ImageView}>
+        {/* <View style={styles.ImageView}>
           <Image source={require('../../assets/Images/Image.png')} />
-        </View>
+        </View> */}
+
+        <TouchableOpacity
+        
+        style={{
+          marginTop:50,
+
+        }}
+        onPress={chechLocationPermission}
+        >
+          <Text style={{
+            textDecorationLine:"underline"
+          }}>Refresh Location</Text>
+        </TouchableOpacity>
         {/* <View>
           <Text
             style={{

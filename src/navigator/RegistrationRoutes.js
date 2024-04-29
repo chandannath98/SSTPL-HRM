@@ -44,6 +44,8 @@ import AsyncStorage from '@react-native-async-storage/async-storage';
 import AllLeaves from '../screens/Leave/AllLeaves';
 import AdminScreen from '../screens/Admin/AdminScreen';
 import ProfileScreen from '../screens/profiles/ProfileScreen';
+import { useSelector } from 'react-redux';
+import { clockinSelector } from '../store/slices/user/user.slice';
 const RegistrationStack = createStackNavigator();
 const Drawer = createDrawerNavigator();
 
@@ -191,6 +193,11 @@ const RegistrationRoutes = ({isAuthenticated, initialRoutName}) => {
 export default RegistrationRoutes;
 
 function MyTabs() {
+
+
+  const clockin = useSelector(clockinSelector);
+
+
   return (
     <Tab.Navigator>
       <Tab.Screen
@@ -220,7 +227,8 @@ function MyTabs() {
         component={AttendanceScreen}
         options={{
           headerShown: false,
-          tabBarLabel: 'Attendence',
+          tabBarLabel: clockin?.attendance?.clock_out_time == null &&
+            clockin?.attendance != null ?"Clock Out":'Attendence',
           tabBarIcon: ({color, size}) => (
             <Icon name="plus-circle" color={color} size={size} />
           ),
